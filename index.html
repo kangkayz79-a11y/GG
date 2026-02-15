@@ -3,196 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Advanced Pong Game</title>
+    <title>Pong Game</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
-            height: 100vh;
-            background: linear-gradient(135deg, #1e1e2e 0%, #0f0f23 100%);
-            font-family: 'Arial', sans-serif;
+            background-color: #000;
             color: #fff;
         }
-
-        .container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
+        canvas {
+            border: 1px solid #fff;
+            margin-top: 20px;
         }
-
-        h1 {
-            font-size: 2.5em;
-            text-shadow: 0 0 20px rgba(0, 255, 255, 0.7);
-            margin-bottom: 10px;
-        }
-
-        .controls {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-            flex-wrap: wrap;
-            justify-content: center;
-            background: rgba(0, 255, 255, 0.1);
-            padding: 15px 25px;
-            border-radius: 10px;
-            border: 2px solid rgba(0, 255, 255, 0.3);
-        }
-
-        .difficulty-selector {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
-
-        .difficulty-selector label {
-            font-weight: bold;
-            color: #00ffff;
-        }
-
-        .difficulty-selector select {
-            padding: 8px 12px;
-            background: #1e1e2e;
-            color: #00ffff;
-            border: 2px solid #00ffff;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1em;
-        }
-
-        button {
-            padding: 10px 20px;
-            background: linear-gradient(135deg, #00ffff, #00aaff);
-            color: #000;
-            border: none;
-            border-radius: 5px;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 1em;
-            transition: all 0.3s ease;
-        }
-
-        button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.6);
-        }
-
-        button:active {
-            transform: scale(0.95);
-        }
-
-        #pong {
-            border: 3px solid #00ffff;
-            background: #0a0a15;
-            box-shadow: 0 0 30px rgba(0, 255, 255, 0.5), inset 0 0 30px rgba(0, 255, 255, 0.1);
-            cursor: none;
-        }
-
-        .scoreboard {
+        #controls {
             display: flex;
             justify-content: space-around;
-            width: 600px;
-            font-size: 2em;
-            font-weight: bold;
-            text-align: center;
-            background: rgba(0, 255, 255, 0.1);
-            padding: 15px;
-            border-radius: 10px;
-            border: 2px solid rgba(0, 255, 255, 0.3);
-        }
-
-        .player-score, .computer-score {
-            flex: 1;
-        }
-
-        .player-score {
-            color: #00ffff;
-            text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
-        }
-
-        .computer-score {
-            color: #ff00ff;
-            text-shadow: 0 0 10px rgba(255, 0, 255, 0.8);
-        }
-
-        .game-status {
-            font-size: 1.5em;
-            font-weight: bold;
-            height: 40px;
-            color: #ffff00;
-            text-shadow: 0 0 10px rgba(255, 255, 0, 0.8);
-        }
-
-        .instructions {
-            background: rgba(0, 255, 255, 0.1);
-            padding: 15px 25px;
-            border-radius: 10px;
-            border: 2px solid rgba(0, 255, 255, 0.3);
-            max-width: 700px;
-            font-size: 0.9em;
-            line-height: 1.6;
-        }
-
-        .instructions h3 {
-            color: #00ffff;
-            margin-bottom: 10px;
+            margin: 10px;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🎮 ADVANCED PONG 🎮</h1>
-        
-        <div class="controls">
-            <div class="difficulty-selector">
-                <label for="difficulty">Difficulty:</label>
-                <select id="difficulty">
-                    <option value="easy">Easy</option>
-                    <option value="medium" selected>Medium</option>
-                    <option value="hard">Hard</option>
-                    <option value="insane">Insane</option>
-                </select>
-            </div>
-            <button id="startBtn">Start Game</button>
-            <button id="pauseBtn">Pause</button>
-            <button id="restartBtn">Restart</button>
-            <button id="soundToggle">🔊 Sound ON</button>
-        </div>
-
-        <div class="game-status" id="status">Click 'Start Game' to begin!</div>
-
-        <canvas id="pong" width="800" height="400"></canvas>
-
-        <div class="scoreboard">
-            <div class="player-score">
-                <div>Player</div>
-                <div id="playerScore">0</div>
-            </div>
-            <div style="flex: 1; text-align: center; color: #00ffff;">vs</div>
-            <div class="computer-score">
-                <div>Computer</div>
-                <div id="computerScore">0</div>
-            </div>
-        </div>
-
-        <div class="instructions">
-            <h3>How to Play:</h3>
-            <p>
-                <strong>Controls:</strong> Move your mouse up/down or use ARROW KEYS to control the left paddle<br>
-                <strong>Objective:</strong> Hit the ball with your paddle to score points. First to 5 points wins!<br>
-                <strong>Tips:</strong> Aim for the edges of your paddle to angle the ball. Higher difficulty = faster AI!
-            </p>
-        </div>
+    <h1>Pong Game</h1>
+    <p>Objective: Score by hitting the ball past your opponent.</p>
+    <div id="controls">
+        <label for="difficulty">Select Difficulty:</label>
+        <select id="difficulty">
+            <option value="easy">Easy</option>
+            <option value="medium">Medium</option>
+            <option value="hard">Hard</option>
+        </select>
+        <button id="startBtn">Start</button>
+        <button id="pauseBtn">Pause</button>
+        <button id="resumeBtn">Resume</button>
     </div>
+    <canvas id="gameCanvas" width="800" height="400"></canvas>
+    <div id="scoreboard">
+        <p>Player 1: <span id="player1Score">0</span></p>
+        <p>Player 2: <span id="player2Score">0</span></p>
+    </div>
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        let player1Score = 0;
+        let player2Score = 0;
+        let ballSpeed = 4;
+        let ballX = canvas.width / 2;
+        let ballY = canvas.height / 2;
+        let ballRadius = 10;
+        let paddleWidth = 10, paddleHeight = 100;
+        let player1Y = (canvas.height - paddleHeight) / 2;
+        let player2Y = (canvas.height - paddleHeight) / 2;
+        let isGamePaused = true;
+        let gameInterval;
 
-    <script src="game.js"></script>
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#fff';
+            ctx.beginPath();
+            ctx.arc(ballX, ballY, ballRadius, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillRect(0, player1Y, paddleWidth, paddleHeight);
+            ctx.fillRect(canvas.width - paddleWidth, player2Y, paddleWidth, paddleHeight);
+        }
+
+        function update() {
+            if (isGamePaused) return;
+            ballX += ballSpeed;
+            if (ballY + ballRadius > canvas.height || ballY - ballRadius < 0) {
+                ballY = (ballY + ballRadius > canvas.height) ? canvas.height - ballRadius : ballRadius;
+            }
+            draw();
+            // Add scoring logic
+            if (ballX < 0) {
+                player2Score++;
+                resetBall();
+            } else if (ballX > canvas.width) {
+                player1Score++;
+                resetBall();
+            }
+            document.getElementById('player1Score').innerText = player1Score;
+            document.getElementById('player2Score').innerText = player2Score;
+        }
+
+        function resetBall() {
+            ballX = canvas.width / 2;
+            ballY = canvas.height / 2;
+            ballSpeed = 4;
+            isGamePaused = true;
+        }
+
+        function startGame() {
+            player1Score = player2Score = 0;
+            resetBall();
+            isGamePaused = false;
+            gameInterval = setInterval(update, 1000 / 60);
+        }
+
+        document.getElementById('startBtn').addEventListener('click', startGame);
+        document.getElementById('pauseBtn').addEventListener('click', function() {
+            isGamePaused = true;
+        });
+        document.getElementById('resumeBtn').addEventListener('click', function() {
+            isGamePaused = false;
+        });
+    </script>
 </body>
 </html>
