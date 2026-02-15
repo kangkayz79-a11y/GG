@@ -1,1 +1,198 @@
-<!DOCTYPE html>\n<html lang="en">\n<head>\n    <meta charset="UTF-8">\n    <meta name="viewport" content="width=device-width, initial-scale=1.0">\n    <title>Pong Game</title>\n    <style>\n        body {\n            display: flex;\n            justify-content: center;\n            align-items: center;\n            height: 100vh;\n            background: black;\n            color: white;\n        }\n        canvas {\n            border: 1px solid white;\n        }\n    </style>\n</head>\n<body>\n    <canvas id="pong" width="800" height="400"></canvas>\n    <script>\n        const canvas = document.getElementById('pong');\n        const context = canvas.getContext('2d');\n\n        // Create the pong paddle\n        const paddleWidth = 10;\n        const paddleHeight = 100;\n        const player = { x: 0, y: canvas.height / 2 - paddleHeight / 2, width: paddleWidth, height: paddleHeight };\n        const computer = { x: canvas.width - paddleWidth, y: canvas.height / 2 - paddleHeight / 2, width: paddleWidth, height: paddleHeight };\n\n        // Create the pong ball\n        const ball = { x: canvas.width / 2, y: canvas.height / 2, radius: 10, speed: 4, velocityX: 5, velocityY: 5 };\n\n        // Draw everything to the canvas\n        function draw() {\n            // Clear the canvas\n            context.clearRect(0, 0, canvas.width, canvas.height);\n\n            // Draw paddles\n            context.fillStyle = 'white';\n            context.fillRect(player.x, player.y, player.width, player.height);\n            context.fillRect(computer.x, computer.y, computer.width, computer.height);\n\n            // Draw ball\n            context.beginPath();\n            context.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2, false);\n            context.fill();\n        }\n\n        // Update game objects\n        function update() {\n            ball.x += ball.velocityX;\n            ball.y += ball.velocityY;\n\n            // Ball collision with top and bottom walls\n            if (ball.y + ball.radius >= canvas.height || ball.y - ball.radius <= 0) {\n                ball.velocityY = -ball.velocityY;\n            }\n\n            // Ball collision with paddles\n            if (ball.x - ball.radius <= player.x + player.width && ball.y >= player.y && ball.y <= player.y + player.height) {\n                ball.velocityX = -ball.velocityX;\n            }\n            if (ball.x + ball.radius >= computer.x && ball.y >= computer.y && ball.y <= computer.y + computer.height) {\n                ball.velocityX = -ball.velocityX;\n            }\n        }\n\n        // Game loop\n        function gameLoop() {\n            draw();\n            update();\n            requestAnimationFrame(gameLoop);\n        }\n\n        gameLoop();\n    </script>\n</body>\n</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Pong Game</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #1e1e2e 0%, #0f0f23 100%);
+            font-family: 'Arial', sans-serif;
+            color: #fff;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            text-shadow: 0 0 20px rgba(0, 255, 255, 0.7);
+            margin-bottom: 10px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: center;
+            background: rgba(0, 255, 255, 0.1);
+            padding: 15px 25px;
+            border-radius: 10px;
+            border: 2px solid rgba(0, 255, 255, 0.3);
+        }
+
+        .difficulty-selector {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .difficulty-selector label {
+            font-weight: bold;
+            color: #00ffff;
+        }
+
+        .difficulty-selector select {
+            padding: 8px 12px;
+            background: #1e1e2e;
+            color: #00ffff;
+            border: 2px solid #00ffff;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+
+        button {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #00ffff, #00aaff);
+            color: #000;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.6);
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        #pong {
+            border: 3px solid #00ffff;
+            background: #0a0a15;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.5), inset 0 0 30px rgba(0, 255, 255, 0.1);
+            cursor: none;
+        }
+
+        .scoreboard {
+            display: flex;
+            justify-content: space-around;
+            width: 600px;
+            font-size: 2em;
+            font-weight: bold;
+            text-align: center;
+            background: rgba(0, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid rgba(0, 255, 255, 0.3);
+        }
+
+        .player-score, .computer-score {
+            flex: 1;
+        }
+
+        .player-score {
+            color: #00ffff;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+        }
+
+        .computer-score {
+            color: #ff00ff;
+            text-shadow: 0 0 10px rgba(255, 0, 255, 0.8);
+        }
+
+        .game-status {
+            font-size: 1.5em;
+            font-weight: bold;
+            height: 40px;
+            color: #ffff00;
+            text-shadow: 0 0 10px rgba(255, 255, 0, 0.8);
+        }
+
+        .instructions {
+            background: rgba(0, 255, 255, 0.1);
+            padding: 15px 25px;
+            border-radius: 10px;
+            border: 2px solid rgba(0, 255, 255, 0.3);
+            max-width: 700px;
+            font-size: 0.9em;
+            line-height: 1.6;
+        }
+
+        .instructions h3 {
+            color: #00ffff;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎮 ADVANCED PONG 🎮</h1>
+        
+        <div class="controls">
+            <div class="difficulty-selector">
+                <label for="difficulty">Difficulty:</label>
+                <select id="difficulty">
+                    <option value="easy">Easy</option>
+                    <option value="medium" selected>Medium</option>
+                    <option value="hard">Hard</option>
+                    <option value="insane">Insane</option>
+                </select>
+            </div>
+            <button id="startBtn">Start Game</button>
+            <button id="pauseBtn">Pause</button>
+            <button id="restartBtn">Restart</button>
+            <button id="soundToggle">🔊 Sound ON</button>
+        </div>
+
+        <div class="game-status" id="status">Click 'Start Game' to begin!</div>
+
+        <canvas id="pong" width="800" height="400"></canvas>
+
+        <div class="scoreboard">
+            <div class="player-score">
+                <div>Player</div>
+                <div id="playerScore">0</div>
+            </div>
+            <div style="flex: 1; text-align: center; color: #00ffff;">vs</div>
+            <div class="computer-score">
+                <div>Computer</div>
+                <div id="computerScore">0</div>
+            </div>
+        </div>
+
+        <div class="instructions">
+            <h3>How to Play:</h3>
+            <p>
+                <strong>Controls:</strong> Move your mouse up/down or use ARROW KEYS to control the left paddle<br>
+                <strong>Objective:</strong> Hit the ball with your paddle to score points. First to 5 points wins!<br>
+                <strong>Tips:</strong> Aim for the edges of your paddle to angle the ball. Higher difficulty = faster AI!
+            </p>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>
